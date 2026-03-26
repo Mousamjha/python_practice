@@ -1,0 +1,18 @@
+You can use os.path.expanduser() to do that. Also include '~' in your path.
+
+here's a snippet of code where I'm trying to open a file on my desktop called movie_quotes.txt and read from it:Hello World !
+Hello World !
+Hello World !
+
+
+You can use os.path.expanduser() to do that. Also include '~' in your path.
+
+here's a snippet of code where I'm trying to open a file on my desktop called movie_quotes.txt and read from it:Hello World !
+Hello Python !
+Hello Python !
+
+You can use os.path.expanduser() to do that. Also include '~' in your path.
+
+here's a snippet of code where I'm trying to open a file on my desktop called movie_quotes.txt and read from it:Hello World !
+Hello Mousam !
+Hello Mousam !

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SIDDHANtS SHOP</title>
+  <style>
+    :root {
+      --bg: #0f172a;       /* slate-900 */
+      --panel: #111827;    /* gray-900 */
+      --soft: #1f2937;     /* gray-800 */
+      --muted: #9ca3af;    /* gray-400 */
+      --text: #e5e7eb;     /* gray-200 */
+      --brand: #22d3ee;    /* cyan-400 */
+      --brand-2: #60a5fa;  /* blue-400 */
+      --ok: #34d399;       /* green-400 */
+      --warn: #fbbf24;     /* amber-400 */
+      --danger: #f87171;   /* red-400 */
+      --shadow: 0 8px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: linear-gradient(180deg, #0b1220, var(--bg));
+      color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    a { color: inherit; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    .navbar {
+      display:flex; align-items:center; justify-content:space-between;
+      background: rgba(17,24,39,.7); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,.06);
+      padding: 14px 18px; border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .brand { display:flex; gap:12px; align-items:center; font-weight:700; letter-spacing:.3px; }
+    .brand .logo { width: 36px; height: 36px; display:grid; place-items:center; border-radius: 10px; background: linear-gradient(135deg,var(--brand),var(--brand-2)); box-shadow: inset 0 0 30px rgba(255,255,255,.15), 0 6px 20px rgba(34,211,238,.25); }
+    .muted { color: var(--muted); font-weight:500; }
+
+    .grid {
+      margin-top: 22px;
+      display:grid; grid-template-columns: 1.2fr .8fr; gap: 22px;
+    }
+    @media (max-width: 900px){ .grid { grid-template-columns: 1fr; } }
+
+    .panel { background: var(--panel); border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .panel > .head { display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center; justify-content:space-between; padding: 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
+
+    .tools { display:flex; flex-wrap:wrap; gap:10px; }
+    input[type="text"], input[type="tel"], input[type="number"], select {
+      background: var(--soft); color: var(--text); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 10px; padding: 10px 12px; outline: none;
+    }
+    .btn { background: linear-gradient(135deg,var(--brand),var(--brand-2)); color:#0b1020; border: none; border-radius: 999px; padding: 10px 14px; font-weight:700; cursor:pointer; transition: transform .06s ease, filter .2s ease; }
+    .btn:hover{ filter: brightness(1.05); }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn.secondary { background: var(--soft); color: var(--text); border: 1px solid rgba(255,255,255,.08); }
+    .chip { display:inline-flex; align-items:center; gap:6px; background: #0b1328; border:1px dashed rgba(255,255,255,.15); color: var(--muted); padding: 6px 10px; border-radius: 999px; font-size: 12px; }
+
+    .products { padding: 16px; display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 1100px){ .products { grid-template-columns: repeat(2,1fr);} }
+    @media (max-width: 640px){ .products { grid-template-columns: 1fr;} }
+
+    .card { background: var(--soft); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; overflow:hidden; display:flex; flex-direction:column; }
+    .card .img { height: 140px; background: radial-gradient(120px 60px at 20% 20%, rgba(255,255,255,.2), transparent), linear-gradient(135deg,#101a30,#0e1a2b); display:grid; place-items:center; font-size:42px; }
+    .card .body { padding: 14px; display:flex; flex-direction:column; gap:8px; }
+    .title { font-weight: 700; }
+    .price { font-weight:800; background: linear-gradient(135deg,#e5e7eb,#9ca3af); -webkit-background-clip:text; background-clip:text; color: transparent; }
+
+    .row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .badge { font-size: 12px; padding: 4px 8px; border-radius: 999px; border:1px solid rgba(255,255,255,.12); color: var(--muted); }
+    .badge.low { color: #fcd34d; border-color: #f59e0b; }
+
+    .cart { display:flex; flex-direction:column; }
+    .cart .body { padding: 16px; display:flex; flex-direction:column; gap:12px; }
+    .cart-item { display:grid; grid-template-columns: 1fr auto auto auto; gap: 10px; align-items:center; padding: 10px; border:1px solid rgba(255,255,255,.06); border-radius: 12px; }
+    .qty { display:inline-flex; gap: 6px; align-items:center; }
+    .qty button { width:28px; height:28px; border-radius: 8px; border: 1px solid rgba(255,255,255,.15); background: #0e162a; color: var(--text); cursor:pointer; }
+
+    .totals { padding: 16px; border-top: 1px solid rgba(255,255,255,.06); display:flex; flex-direction:column; gap: 10px; }
+    .tot-line { display:flex; justify-content:space-between; color: var(--muted); }
+    .tot-line strong { color: var(--text); }
+
+    .footer { margin-top: 16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .empty { text-align:center; color: var(--muted); padding: 24px; border:1px dashed rgba(255,255,255,.15); border-radius: 12px; }
+
+    .notice { font-size:12px; color: var(--muted); }
+
+    /* Modal (keeps theme) */
+    .modal {
+      position: fixed; inset: 0; display:none; place-items:center;
+      background: rgba(2,6,23,.6); backdrop-filter: blur(6px); z-index: 50;
+    }
+    .dialog {
+      width: 100%; max-width: 720px; background: var(--panel); border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius); box-shadow: var(--shadow); overflow:hidden;
+    }
+    .dialog .head { display:flex; align-items:center; justify-content:space-between; padding:16px; border-bottom:1px solid rgba(255,255,255,.06);}
+    .dialog .body { padding: 16px; display:grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .dialog .foot { padding: 16px; border-top:1px solid rgba(255,255,255,.06); display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; }
+    @media (max-width: 720px){ .dialog .body { grid-template-columns: 1fr; } }
+
+    .pilltabs { display:flex; gap:8px; flex-wrap:wrap; }
+    .pill { padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.1); background:#0b1328; cursor:pointer; font-weight:700; color: var(--muted);}
+    .pill.active { background: linear-gradient(135deg,var(--brand),var(--brand-2)); color:#0b1020; border-color: transparent; }
+
+    .section { background: var(--soft); border:1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px; display:flex; flex-direction:column; gap:10px; }
+    .kv { display:flex; justify-content:space-between; }
+    .error { color: var(--danger); font-size: 12px; }
+    .ok { color: var(--ok); font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="navbar">
+      <div class="brand">
+        <div class="logo">🛍️</div>
+        <div>
+          <div>SIDDHANtS SHOP</div>
+          <div class="muted" style="font-size:12px">A tiny demo storefront</div>
+        </div>
+      </div>
+      <div class="chip">GST 18% • Coupons: <code>SAVE10</code>, <code>FLAT50</code></div>
+    </div>
+
+    <div class="grid">
+      <!-- Catalog -->
+      <section class="panel">
+        <div class="head">
+          <div class="tools">
+            <input id="search" type="text" placeholder="Search products… (e.g. cover)" />
+            <select id="category">
+              <option value="all">All Categories</option>
+              <option value="stationery">Stationery</option>
+              <option value="mobile">Mobile Accessories</option>
+              <option value="gadgets">Gadgets</option>
+            </select>
+          </div>
+          <div class="tools">
+            <button class="btn secondary" id="resetBtn">Reset</button>
+          </div>
+        </div>
+        <div class="products" id="products"></div>
+      </section>
+
+      <!-- Cart -->
+      <aside class="panel cart">
+        <div class="head">
+          <div style="font-weight:800">Your Cart</div>
+          <button class="btn secondary" id="clearCart">Clear</button>
+        </div>
+        <div class="body" id="cartBody">
+          <div class="empty">Cart is empty. Add some items →</div>
+        </div>
+        <div class="totals">
+          <div class="tot-line"><span>Subtotal</span><strong id="subTot">₹0</strong></div>
+          <div class="tot-line"><span>Discount</span><strong id="discount">- ₹0</strong></div>
+          <div class="tot-line"><span>GST (18%) <label class="notice"><input type="checkbox" id="gstToggle" checked /> apply</label></span><strong id="gst">₹0</strong></div>
+          <div class="tot-line" style="font-size:18px"><span>Total Payable</span><strong id="grandTot">₹0</strong></div>
+          <div class="footer">
+            <input id="coupon" type="text" placeholder="Coupon code" />
+            <button class="btn" id="applyCoupon">Apply</button>
+            <button class="btn" id="checkout">Checkout</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <p class="notice">Demo only. No backend. Prices and stock are mock data. Refresh to reset state.</p>
+  </div>
+
+  <!-- Checkout Modal (same theme) -->
+  <div class="modal" id="checkoutModal" aria-hidden="true">
+    <div class="dialog">
+      <div class="head">
+        <div style="font-weight:800">Checkout</div>
+        <button class="btn secondary" id="closeCheckout">Close</button>
+      </div>
+      <div class="body">
+        <!-- Left: Payment method + Inputs -->
+        <div class="section">
+          <div class="pilltabs" id="payTabs">
+            <div class="pill active" data-method="upi">UPI</div>
+            <div class="pill" data-method="card">Card</div>
+            <div class="pill" data-method="wallet">Wallet</div>
+            <div class="pill" data-method="cod">Cash on Delivery</div>
+          </div>
+
+          <!-- UPI -->
+          <div class="payform" data-method="upi">
+            <label>Phone number</label>
+            <input id="phoneInput" type="tel" placeholder="e.g. 9876543210" maxlength="10" />
+            <div class="notice">We’ll send a mock OTP (not real) to this number.</div>
+          </div>
+
+          <!-- Card -->
+          <div class="payform" data-method="card" style="display:none">
+            <label>Card number</label>
+            <input id="cardInput" type="tel" placeholder="16 digits" maxlength="19" />
+            <div style="display:flex; gap:8px;">
+              <input id="mmInput" type="number" placeholder="MM" min="1" max="12" style="width:90px" />
+              <input id="yyInput" type="number" placeholder="YY" min="24" max="40" style="width:90px" />
+              <input id="cvvInput" type="number" placeholder="CVV" min="100" max="999" style="width:120px" />
+            </div>
+            <div class="notice">Demo only. Do not enter real card details.</div>
+          </div>
+
+          <!-- Wallet -->
+          <div class="payform" data-method="wallet" style="display:none">
+            <label>Wallet ID</label>
+            <input id="walletInput" type="text" placeholder="Any ID (demo)" />
+            <div class="notice">Instant mock cashback: 10% of pre-tax total (demo).</div>
+          </div>
+
+          <!-- COD -->
+          <div class="payform" data-method="cod" style="display:none">
+            <div class="notice">Pay cash on delivery. Phone is required for contact.</div>
+            <label>Phone number</label>
+            <input id="phoneInputCOD" type="tel" placeholder="e.g. 9876543210" maxlength="10" />
+          </div>
+
+          <div id="formError" class="error"></div>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="section" id="summaryBox">
+          <div style="font-weight:800; margin-bottom:4px;">Order Summary</div>
+          <div id="summaryItems" class="notice"></div>
+          <div class="kv"><span>Subtotal</span><strong id="sumSubtotal">₹0</strong></div>
+          <div class="kv"><span>Discount</span><strong id="sumDiscount">- ₹0</strong></div>
+          <div class="kv"><span>GST</span><strong id="sumGST">₹0</strong></div>
+          <div class="kv" style="font-size:18px"><span>Total</span><strong id="sumGrand">₹0</strong></div>
+          <div class="ok" id="saveMsg" style="display:none">Saved your details for next time.</div>
+        </div>
+      </div>
+      <div class="foot">
+        <button class="btn secondary" id="printReceipt">Print Receipt</button>
+        <button class="btn" id="confirmPay">Confirm & Pay</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Mock catalog data ---
+    const productsData = [
+      {id:1, name:"Red & Black Scissors", price: 199, stock: 8, category:"stationery", emoji:"✂️"},
+      {id:2, name:"Pack of Envelopes (25)", price: 149, stock: 20, category:"stationery", emoji:"✉️"},
+      {id:3, name:"iPhone 14 Cover — Black", price: 799, stock: 3, category:"mobile", emoji:"📱"},
+      {id:4, name:"iPhone 15 Cover — T&J", price: 999, stock: 2, category:"mobile", emoji:"📲"},
+      {id:5, name:"Bottle Opener", price: 129, stock: 10, category:"gadgets", emoji:"🍾"},
+      {id:6, name:"Stapler Pins", price: 79, stock: 6, category:"stationery", emoji:"📎"},
+      {id:7, name:"Raymond Wallet (LE)", price: 1999, stock: 1, category:"gadgets", emoji:"👛"},
+    ];
+
+    const GST_RATE = 0.18;
+
+    // Simple coupon rules
+    const coupons = {
+      "SAVE10": { type:"percent", value: 10 },
+      "FLAT50": { type:"flat", value: 50 }
+    };
+
+    const state = {
+      cart: {}, // {id: qty}
+      coupon: null,
+      gst: true,
+      query: "",
+      category: "all",
+    };
+
+    // --- Utilities ---
+    const fmt = n => "₹" + n.toLocaleString('en-IN');
+
+    function getById(id){ return productsData.find(p => p.id === id); }
+
+    function filteredProducts(){
+      return productsData.filter(p => {
+        const matchQ = state.query ? p.name.toLowerCase().includes(state.query.toLowerCase()) : true;
+        const matchC = state.category === 'all' ? true : p.category === state.category;
+        return matchQ && matchC;
+      });
+    }
+
+    // --- Render Catalog ---
+    function renderProducts(){
+      const wrap = document.getElementById('products');
+      wrap.innerHTML = '';
+      for (const p of filteredProducts()){
+        const low = p.stock <= 3 ? '<span class="badge low">Low stock</span>' : '<span class="badge">In stock</span>';
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="img">${p.emoji}</div>
+          <div class="body">
+            <div class="row">
+              <div class="title">${p.name}</div>
+              ${low}
+            </div>
+            <div class="row">
+              <div class="price">${fmt(p.price)}</div>
+              <button class="btn" data-id="${p.id}">Add</button>
+            </div>
+          </div>`;
+        card.querySelector('button').addEventListener('click', () => addToCart(p.id));
+        wrap.appendChild(card);
+      }
+      if (!wrap.children.length){
+        wrap.innerHTML = '<div class="empty" style="grid-column:1/-1">No products match your search.</div>';
+      }
+    }
+
+    // --- Cart operations ---
+    function addToCart(id){
+      const p = getById(id);
+      const qtyInCart = state.cart[id] || 0;
+      if (qtyInCart >= p.stock){
+        alert('Not enough stock');
+        return;
+      }
+      state.cart[id] = qtyInCart + 1;
+      renderCart();
+    }
+
+    function changeQty(id, delta){
+      const qty = (state.cart[id] || 0) + delta;
+      if (qty <= 0){ delete state.cart[id]; }
+      else {
+        const p = getById(id);
+        if (qty > p.stock) return; // ignore if exceeds stock
+        state.cart[id] = qty;
+      }
+      renderCart();
+    }
+
+    function clearCart(){ state.cart = {}; renderCart(); }
+
+    // --- Totals ---
+    function computeTotals(){
+      let subtotal = 0;
+      for (const [id, qty] of Object.entries(state.cart)){
+        const p = getById(+id);
+        subtotal += p.price * qty;
+      }
+
+      // Apply coupon (on subtotal)
+      let discount = 0;
+      if (state.coupon){
+        if (state.coupon.type === 'percent') discount = Math.round(subtotal * (state.coupon.value/100));
+        if (state.coupon.type === 'flat') discount = state.coupon.value;
+        discount = Math.min(discount, subtotal);
+      }
+      const preTax = Math.max(0, subtotal - discount);
+      const gst = state.gst ? Math.round(preTax * GST_RATE) : 0;
+      const grand = preTax + gst;
+      return { subtotal, discount, gst, grand, preTax };
+    }
+
+    function renderCart(){
+      const body = document.getElementById('cartBody');
+      body.innerHTML = '';
+      const ids = Object.keys(state.cart);
+      if (!ids.length){
+        body.innerHTML = '<div class="empty">Cart is empty. Add some items →</div>';
+      } else {
+        for (const id of ids){
+          const qty = state.cart[id];
+          const p = getById(+id);
+          const line = document.createElement('div');
+          line.className = 'cart-item';
+          line.innerHTML = `
+            <div>${p.name}<div class="notice">${fmt(p.price)} each</div></div>
+            <div class="qty">
+              <button aria-label="decrease" onclick="changeQty(${p.id}, -1)">−</button>
+              <div>${qty}</div>
+              <button aria-label="increase" onclick="changeQty(${p.id}, 1)">+</button>
+            </div>
+            <div>${fmt(p.price * qty)}</div>
+            <button class="btn secondary" onclick="changeQty(${p.id}, -${qty})">Remove</button>
+          `;
+          body.appendChild(line);
+        }
+      }
+
+      const {subtotal, discount, gst, grand} = computeTotals();
+      document.getElementById('subTot').textContent = fmt(subtotal);
+      document.getElementById('discount').textContent = '- ' + fmt(discount);
+      document.getElementById('gst').textContent = fmt(gst);
+      document.getElementById('grandTot').textContent = fmt(grand);
+    }
+
+    // --- Events (catalog/cart) ---
+    document.getElementById('search').addEventListener('input', (e)=>{ state.query = e.target.value; renderProducts(); });
+    document.getElementById('category').addEventListener('change', (e)=>{ state.category = e.target.value; renderProducts(); });
+    document.getElementById('resetBtn').addEventListener('click', ()=>{
+      state.query=''; state.category='all';
+      document.getElementById('search').value=''; document.getElementById('category').value='all';
+      renderProducts();
+    });
+    document.getElementById('gstToggle').addEventListener('change', (e)=>{ state.gst = e.target.checked; renderCart(); });
+
+    document.getElementById('applyCoupon').addEventListener('click', ()=>{
+      const code = (document.getElementById('coupon').value || '').trim().toUpperCase();
+      if (!code) { state.coupon = null; renderCart(); return; }
+      const c = coupons[code];
+      if (!c){ alert('Invalid coupon'); return; }
+      state.coupon = c;
+      renderCart();
+    });
+
+    // --- Advanced Checkout Modal ---
+    const modal = document.getElementById('checkoutModal');
+    const closeCheckout = document.getElementById('closeCheckout');
+    const confirmPay = document.getElementById('confirmPay');
+    const printReceiptBtn = document.getElementById('printReceipt');
+
+    const payTabs = document.getElementById('payTabs');
+    const payForms = [...document.querySelectorAll('.payform')];
+    let activeMethod = 'upi';
+
+    function setActiveMethod(m){
+      activeMethod = m;
+      [...payTabs.children].forEach(p => p.classList.toggle('active', p.dataset.method===m));
+      payForms.forEach(f => f.style.display = (f.dataset.method===m ? '' : 'none'));
+      document.getElementById('formError').textContent = '';
+      updateSummaryBox();
+    }
+
+    payTabs.addEventListener('click', (e)=>{
+      const pill = e.target.closest('.pill');
+      if (!pill) return;
+      setActiveMethod(pill.dataset.method);
+      savePrefs();
+    });
+
+    document.getElementById('checkout').addEventListener('click', ()=>{
+      const { grand } = computeTotals();
+      if (grand <= 0){ alert('Add items to cart first.'); return; }
+      openCheckout();
+    });
+
+    closeCheckout.addEventListener('click', closeModal);
+
+    function openCheckout(){
+      // Load saved details
+      loadPrefs();
+      // Fill summary
+      updateSummaryBox();
+      modal.style.display = 'grid';
+      modal.setAttribute('aria-hidden','false');
+    }
+    function closeModal(){
+      modal.style.display = 'none';
+      modal.setAttribute('aria-hidden','true');
+    }
+
+    function updateSummaryBox(){
+      const { subtotal, discount, gst, grand } = computeTotals();
+      document.getElementById('sumSubtotal').textContent = fmt(subtotal);
+      document.getElementById('sumDiscount').textContent = '- ' + fmt(discount);
+      document.getElementById('sumGST').textContent = fmt(gst);
+      document.getElementById('sumGrand').textContent = fmt(grand);
+
+      const items = Object.entries(state.cart).map(([id,qty])=>{
+        const p = getById(+id);
+        return `${p.name} × ${qty}`;
+      });
+      document.getElementById('summaryItems').textContent = items.length ? items.join(' • ') : 'No items';
+    }
+
+    // Validation helpers
+    function onlyDigits(s){ return (s||'').replace(/\D/g,''); }
+    function validate(){
+      const err = document.getElementById('formError');
+      err.textContent = '';
+      if (activeMethod === 'upi'){
+        const ph = onlyDigits(document.getElementById('phoneInput').value);
+        if (ph.length !== 10){ err.textContent = 'Enter a 10-digit phone number for UPI.'; return false; }
+      } else if (activeMethod === 'card'){
+        const card = onlyDigits(document.getElementById('cardInput').value);
+        const mm = +document.getElementById('mmInput').value;
+        const yy = +document.getElementById('yyInput').value;
+        const cvv = +document.getElementById('cvvInput').value;
+        if (card.length !== 16){ err.textContent = 'Card must be 16 digits (demo).'; return false; }
+        if (!(mm>=1 && mm<=12)) { err.textContent = 'Enter valid expiry month (01–12).'; return false; }
+        if (!(yy>=24 && yy<=40)) { err.textContent = 'Enter expiry year (YY) e.g., 28.'; return false; }
+        if (!(cvv>=100 && cvv<=999)) { err.textContent = 'CVV must be 3 digits.'; return false; }
+      } else if (activeMethod === 'wallet'){
+        const wid = (document.getElementById('walletInput').value||'').trim();
+        if (!wid){ err.textContent = 'Enter a Wallet ID.'; return false; }
+      } else if (activeMethod === 'cod'){
+        const ph = onlyDigits(document.getElementById('phoneInputCOD').value);
+        if (ph.length !== 10){ err.textContent = 'Enter a 10-digit phone number for COD contact.'; return false; }
+      }
+      return true;
+    }
+
+    // Confirm & Pay (mock)
+    confirmPay.addEventListener('click', ()=>{
+      if (!validate()) return;
+
+      const { grand, preTax } = computeTotals();
+      const orderId = Math.floor(Math.random()*900000 + 100000);
+
+      // Save details (for convenience)
+      savePrefs(true);
+
+      // Wallet mock cashback
+      let cashback = 0;
+      if (activeMethod === 'wallet'){
+        cashback = Math.round(preTax * 0.10);
+      }
+
+      alert(`Payment successful!\nOrder #${orderId}\nPaid: ${fmt(grand)}${cashback?`\nCashback (wallet): ${fmt(cashback)}`:''}`);
+
+      // Generate printable receipt data
+      lastReceipt = makeReceiptHTML(orderId, grand, cashback);
+      // Clear cart
+      clearCart();
+      closeModal();
+    });
+
+    // Printable receipt
+    let lastReceipt = '';
+    function makeReceiptHTML(orderId, grand, cashback){
+      const { subtotal, discount, gst } = computeTotals(); // after clear it would be 0, so build before calling clearCart in real use
+      const items = Object.entries(state.cart).map(([id,qty])=>{
+        const p = getById(+id);
+        return `<tr><td style="padding:6px 8px;border-bottom:1px solid #eee">${p.name}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right">${qty}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right">${fmt(p.price*qty)}</td></tr>`;
+      }).join('');
+      const methodLabel = ({upi:'UPI',card:'Card',wallet:'Wallet',cod:'Cash on Delivery'})[activeMethod] || '—';
+
+      return `
+        <div style="font-family: ui-sans-serif, system-ui; color:#0b1220; max-width:700px; margin:0 auto;">
+          <h2 style="margin:0 0 8px">SIDDHANtS SHOP</h2>
+          <div style="color:#555;margin-bottom:12px">Order #${orderId} • ${new Date().toLocaleString()}</div>
+          <table style="width:100%; border-collapse:collapse; font-size:14px">${items}</table>
+          <div style="margin-top:10px; border-top:1px solid #ddd; padding-top:10px">
+            <div style="display:flex; justify-content:space-between"><span>Subtotal</span><strong>${fmt(subtotal)}</strong></div>
+            <div style="display:flex; justify-content:space-between"><span>Discount</span><strong>-${fmt(discount)}</strong></div>
+            <div style="display:flex; justify-content:space-between"><span>GST</span><strong>${fmt(gst)}</strong></div>
+            <div style="display:flex; justify-content:space-between; font-size:18px"><span>Total</span><strong>${fmt(grand)}</strong></div>
+            <div style="display:flex; justify-content:space-between"><span>Method</span><strong>${methodLabel}</strong></div>
+            ${cashback ? `<div style="display:flex; justify-content:space-between"><span>Wallet Cashback</span><strong>${fmt(cashback)}</strong></div>` : ''}
+          </div>
+          <p style="color:#666; font-size:12px; margin-top:12px">Demo receipt. No real payment was processed.</p>
+        </div>`;
+    }
+
+    printReceiptBtn.addEventListener('click', ()=>{
+      if (!lastReceipt){ alert('No recent order to print. Complete checkout first.'); return; }
+      const win = window.open('', 'PRINT', 'height=600,width=800');
+      win.document.write(`<!doctype html><html><head><title>Receipt</title></head><body>${lastReceipt}<script>window.onload=()=>window.print();<\/script></body></html>`);
+      win.document.close();
+    });
+
+    // Save/load last-used details (localStorage)
+    function savePrefs(showMsg){
+      const pref = {
+        method: activeMethod,
+        phone: document.getElementById('phoneInput')?.value || '',
+        phoneCOD: document.getElementById('phoneInputCOD')?.value || '',
+        card: document.getElementById('cardInput')?.value || '',
+        mm: document.getElementById('mmInput')?.value || '',
+        yy: document.getElementById('yyInput')?.value || '',
+        cvv: document.getElementById('cvvInput')?.value || '',
+        wallet: document.getElementById('walletInput')?.value || '',
+      };
+      localStorage.setItem('sid_checkout_pref', JSON.stringify(pref));
+      if (showMsg){ const msg = document.getElementById('saveMsg'); msg.style.display='block'; setTimeout(()=>msg.style.display='none', 1500); }
+    }
+    function loadPrefs(){
+      const raw = localStorage.getItem('sid_checkout_pref'); if (!raw) return;
+      try {
+        const pref = JSON.parse(raw);
+        setActiveMethod(pref.method || 'upi');
+        if (pref.phone) document.getElementById('phoneInput').value = pref.phone;
+        if (pref.phoneCOD) document.getElementById('phoneInputCOD').value = pref.phoneCOD;
+        if (pref.card) document.getElementById('cardInput').value = pref.card;
+        if (pref.mm) document.getElementById('mmInput').value = pref.mm;
+        if (pref.yy) document.getElementById('yyInput').value = pref.yy;
+        if (pref.cvv) document.getElementById('cvvInput').value = pref.cvv;
+        if (pref.wallet) document.getElementById('walletInput').value = pref.wallet;
+      } catch(e){}
+    }
+
+    // Mask card input (adds spaces every 4)
+    const cardInput = document.getElementById('cardInput');
+    if (cardInput){
+      cardInput.addEventListener('input', (e)=>{
+        const digits = e.target.value.replace(/\D/g,'').slice(0,16);
+        e.target.value = digits.replace(/(.{4})/g,'$1 ').trim();
+      });
+    }
+
+    document.getElementById('checkout').addEventListener('click', updateSummaryBox);
+    document.getElementById('clearCart').addEventListener('click', clearCart);
+
+    // Initial render
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>

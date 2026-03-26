@@ -1,0 +1,20 @@
+Shri Siddhant's Shop
+Invoice No : INV6299
+Customer   : Siddhant Jha
+Date/Time  : 18-08-2025 18:02:15
+-----------------------------------------------------------------------
+iPhone 15 cover Tom and Jerry                 x1    @Rs.50    = Rs.50
+Coupons purchased                             x1    @Rs.50    = Rs.50
+-----------------------------------------------------------------------
+Subtotal                         : Rs. 100
+Sale 50% off               : Rs. 50
+Offer discounts                  : Rs. 0
+Coupon C-9994                  : applied
+Secret coupon note               : Secret coupon used: flat amount off
+Secret coupon discount           : Rs. 50
+Pre-tax total                    : Rs. 0
+GST                             : Rs. 0
+-----------------------------------------------------------------------
+TOTAL PAYABLE                    : Rs. 0
+Loyalty points earned            : 0
+=======================================================================
